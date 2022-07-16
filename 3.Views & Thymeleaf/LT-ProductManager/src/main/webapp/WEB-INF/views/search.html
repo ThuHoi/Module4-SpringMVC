@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+</head>
+<body>
+<h3>Products</h3>
+<p>
+    <a th:href="@{/product}">
+        Back to product list
+    </a>
+</p>
+<table id = "products">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Img</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>View</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row : ${product}">
+        <td th:text="${row.getName()}"></td>
+        <td th:text="${row.getPrice()}"></td>
+        <td><img th:src="${row.getImg()}" width="250" height="250"></td>
+        <td th:text="${row.getCategory().getNameCate()}"></td>
+        <td th:switch="${row.isStatus()}">
+            <scan th:case="true" style="color: green">Con hang</scan>
+            <scan th:case="false" style="color: red">Het hang</scan>
+        </td>
+        <td><a th:href="@{/product/{id}/edit(id=${row.getIdP()})}">edit</a></td>
+        <td><a th:href="@{/product/{id}/delete(id=${row.getIdP()})}">delete</a></td>
+        <td><a th:href="@{/product/{id}/view(id=${row.getIdP()})}">view</a></td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
