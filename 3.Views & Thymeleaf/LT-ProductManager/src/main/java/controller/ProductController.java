@@ -1,6 +1,6 @@
 package controller;
 
-import model.Category;
+
 import model.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
