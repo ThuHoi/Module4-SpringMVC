@@ -12,7 +12,7 @@
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/create-customer}" th:object="${customer}" method="post">
+<form th:action="@{/create-customer}" th:object="${customer}" method="post" enctype="multipart/form-data">
     <table>
         <tr>
             <td>First name:</td>
@@ -31,6 +31,18 @@
             </td>
         </tr>
         <tr>
+            <td>Img:</td>
+            <td>
+                <label for="file-input">
+                    <img id="image" src="" style="height: 100px; width: 100px">
+                </label>
+                <input id="file-input" type="file" hidden name="file" accept="image/gif , image/jpeg, image/png"
+                       onchange="luufile()">
+                <input id="anh" name="file" type="file" hidden>
+            </td>
+        </tr>
+
+        <tr>
             <td></td>
             <td><input type="submit" value="Create customer"></td>
         </tr>
@@ -38,3 +50,20 @@
 </form>
 </body>
 </html>
+<script>
+    function luufile() {
+        let filename = document.getElementById("file-input");
+        let link = document.getElementById("anh")
+
+        if (filename.files[0] != undefined) {
+            link.files = filename.files
+        }
+        if (link.files && link.files[0]) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("image").src = e.target.result;
+            }
+            reader.readAsDataURL(filename.files[0]);
+        }
+    }
+</script>

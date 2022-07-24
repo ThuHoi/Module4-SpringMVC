@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -19,11 +20,9 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.ISpringTemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -42,6 +41,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories("com.codegym.repository")
 @EnableSpringDataWebSupport
+@PropertySource("classpath:upload_file.properties")
 public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
     @Value("${file-upload}")
     private String fileUpload;
@@ -84,7 +84,7 @@ public class AppConfig extends WebMvcConfigurerAdapter implements ApplicationCon
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3308/customerprovince");
+        dataSource.setUrl("jdbc:mysql://localhost:3308/customerprovince?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
         dataSource.setUsername("root");
         dataSource.setPassword("02051996Hp");
         return dataSource;

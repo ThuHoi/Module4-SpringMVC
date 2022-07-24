@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -28,7 +32,7 @@ public class CustomerController {
     private IProvinceService provinceService;
 
     @ModelAttribute("provinces")
-    public Iterable<Province> provinces(){
+    public Iterable<Province> provinces() {
         return provinceService.findAll();
     }
 
@@ -41,7 +45,14 @@ public class CustomerController {
     }
 
     @PostMapping("/create-customer")
-    public ModelAndView saveCustomer(@ModelAttribute("customer") Customer customer) {
+    public ModelAndView saveCustomer(@ModelAttribute("customer") Customer customer,MultipartFile file) {
+        String nameImg = file.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(file.getBytes(), new File(fileUpload + nameImg));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        customer.setImg("/" + nameImg);
         customerService.save(customer);
         ModelAndView modelAndView = new ModelAndView("/customer/create");
         modelAndView.addObject("customer", new Customer());
@@ -50,9 +61,9 @@ public class CustomerController {
     }
 
     @GetMapping("/customers")
-    public ModelAndView listCustomers(@RequestParam("search") Optional<String> search, Pageable pageable){
+    public ModelAndView listCustomers(@RequestParam("search") Optional<String> search, Pageable pageable) {
         Page<Customer> customers;
-        if(search.isPresent()){
+        if (search.isPresent()) {
             customers = customerService.findAllByFirstNameContaining(search.get(), pageable);
         } else {
             customers = customerService.findAll(pageable);

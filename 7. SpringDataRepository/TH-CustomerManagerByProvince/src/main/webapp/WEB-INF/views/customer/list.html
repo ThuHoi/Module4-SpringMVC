@@ -18,6 +18,7 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Province</th>
+        <th>Img</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -27,6 +28,7 @@
             <td th:text="${customer.lastName}"></td>
             <td th:if="${customer.province}" th:text="${customer.province.name}"></td>
             <td th:unless="${customer.province}"></td>
+            <td><img th:src="${customer.img}" height="200" width="200"></td>
             <td><a th:href="@{/edit-customer/__${customer.id}__ }">Edit</a></td>
             <td><a th:href="@{/delete-customer/__${customer.id}__ }">Delete</a></td>
         </tr>
